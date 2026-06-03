@@ -1,0 +1,27 @@
+name: Mirror Skills to Google Drive
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup rclone
+        uses: AnimMouse/setup-rclone@v1
+        with:
+          rclone_config: ${{ secrets.RCLONE_CONFIG_BASE64 }}
+
+      - name: Sync skills to Drive
+        run: |
+          rclone sync . "gdrive:Grok Skills Mirror" \
+            --transfers 8 \
+            --checkers 16 \
+            --fast-list \
+            --exclude ".git/**" \
+            --exclude ".github/**" \
+            --log-level INFO

@@ -1,0 +1,18 @@
+name: Validate Skills
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate all SKILL.md files
+        uses: Flash-Brew-Digital/validate-skill@v1
+        with:
+          path: .
+          fail-on-warning: "true"
